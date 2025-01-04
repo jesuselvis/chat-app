@@ -7,7 +7,11 @@ export const AudioRecorder = ({ onAudioRecord }) => {
 
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: true,
+        video: false 
+    });
+    
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
       chunksRef.current = [];
@@ -16,7 +20,7 @@ export const AudioRecorder = ({ onAudioRecord }) => {
         chunksRef.current.push(e.data);
       };
 
-      mediaRecorder.onstop = () => {
+      mediaRecorder.current.onstop = () => {
         const audioBlob = new Blob(chunksRef.current, { type: 'audio/wav' });
         const reader = new FileReader();
         reader.readAsDataURL(audioBlob);
@@ -26,11 +30,15 @@ export const AudioRecorder = ({ onAudioRecord }) => {
         stream.getTracks().forEach(track => track.stop());
       };
 
-      mediaRecorder.start();
+      mediaRecorder.current.start();
       setIsRecording(true);
     } catch (error) {
-      console.error('Error accessing microphone:', error);
-      alert('Error al acceder al micrófono');
+      if(error.name === 'NotAllowedError'){
+        alert('Por favor, admitir el acceso al micrófono');
+      }else{
+        alert('Error: ' + error.message);
+      }
+      console.error(error);
     }
   };
 
