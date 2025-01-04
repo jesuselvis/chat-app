@@ -15,7 +15,7 @@ export const MessageList = ({ messages, currentUser }) => {
   return (
     <>
       <div style={{ 
-        height: '500px', 
+        height: '350px', 
         overflowY: 'auto', 
         padding: '15px',
         backgroundColor: 'white',

@@ -69,7 +69,6 @@ function Chat() {
     <div style={{ 
       maxWidth: '800px',
       margin: '20px auto',
-      padding: '20px',
       backgroundColor: '#f5f5f5',
       borderRadius: '12px',
       boxShadow: '0 4px 12px rgba(0,0,0,0.15)',        
