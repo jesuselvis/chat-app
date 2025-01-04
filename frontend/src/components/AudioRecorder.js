@@ -1,50 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 export const AudioRecorder = ({ onAudioRecord }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const mediaRecorderRef = useRef(null);
+  const chunksRef = useRef([]);
 
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
-      const chunks = [];
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      chunksRef.current = [];
 
-      recorder.ondataavailable = (e) => chunks.push(e.data);
-      recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/wav' });
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = () => onAudioRecord(reader.result);
+      mediaRecorder.ondataavailable = (e) => {
+        chunksRef.current.push(e.data);
       };
 
-      recorder.start();
-      setMediaRecorder(recorder);
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(chunksRef.current, { type: 'audio/wav' });
+        const reader = new FileReader();
+        reader.readAsDataURL(audioBlob);
+        reader.onloadend = () => {
+          onAudioRecord(reader.result);
+        };
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.start();
       setIsRecording(true);
-    } catch (err) {
-      console.error('Error:', err);
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      alert('Error al acceder al micrófono');
     }
   };
 
   const stopRecording = () => {
-    mediaRecorder.stop();
-    setIsRecording(false);
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
   };
 
   return (
-    <button 
+    <button
+      type="button"
       onClick={isRecording ? stopRecording : startRecording}
       style={{
         padding: '10px',
-        backgroundColor: isRecording ? 'red' : 'gray',
+        backgroundColor: isRecording ? '#ff4444' : '#666',
         color: 'white',
         border: 'none',
         borderRadius: '50%',
         width: '40px',
-        height: '40px'
+        height: '40px',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}
     >
-      🎤
+      {isRecording ? '⬤' : '🎤'}
     </button>
   );
 };
