@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
-import EmojiPicker from 'emoji-picker-react';
+import { LoginForm } from './components/LoginForm';
+import { MessageList } from './components/MessageList';
+import { ChatForm } from './components/ChatForm';
 
 const socket = io('http://34.227.157.219:5000');
 
@@ -18,14 +20,12 @@ function Chat() {
     });
   }, []);
 
-  const setName = (e) => {
+  const handleSetName = (e) => {
     e.preventDefault();
-    if (username.trim()) {
-      setIsNameSet(true);
-    }
+    if (username.trim()) setIsNameSet(true);
   };
 
-  const sendMessage = (e) => {
+  const handleSendMessage = (e) => {
     e.preventDefault();
     if (messageInput.trim() || selectedImage) {
       socket.emit('message', { 
@@ -38,77 +38,41 @@ function Chat() {
     }
   };
 
-  const onImageUpload = (e) => {
+  const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setSelectedImage(reader.result);
-    };
     if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setSelectedImage(reader.result);
       reader.readAsDataURL(file);
     }
   };
 
-  const onEmojiClick = (emojiObject) => {
-    setMessageInput(prev => prev + emojiObject.emoji);
-    setShowEmojiPicker(false);
-  };
-
   if (!isNameSet) {
     return (
-      <form onSubmit={setName} style={{ maxWidth: '400px', margin: '20px auto' }}>
-        <input
-          placeholder="Ingresa tu nombre"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
-        />
-        <button type="submit" style={{ width: '100%', padding: '10px' }}>
-          Comenzar Chat
-        </button>
-      </form>
+      <LoginForm 
+        username={username}
+        onUsernameChange={(e) => setUsername(e.target.value)}
+        onSubmit={handleSetName}
+      />
     );
   }
 
   return (
     <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
       <h2>Chat como: {username}</h2>
-      <div style={{ height: '400px', overflowY: 'auto', border: '1px solid #ccc', marginBottom: '10px' }}>
-        {messages.map((msg, i) => (
-          <div key={i} style={{ padding: '10px', backgroundColor: msg.user === username ? '#e3f2fd' : 'white' }}>
-            <strong>{msg.user}:</strong> {msg.text}
-            {msg.image && <img src={msg.image} alt="uploaded" style={{ maxWidth: '200px', display: 'block', marginTop: '5px' }} />}
-          </div>
-        ))}
-      </div>
-      <form onSubmit={sendMessage}>
-        <div style={{ display: 'flex', marginBottom: '10px' }}>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={onImageUpload}
-            style={{ marginRight: '10px' }}
-          />
-          <button type="button" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
-            😊
-          </button>
-        </div>
-        {showEmojiPicker && (
-          <div style={{ position: 'absolute', bottom: '100px' }}>
-            <EmojiPicker onEmojiClick={onEmojiClick} />
-          </div>
-        )}
-        <div style={{ display: 'flex' }}>
-          <input
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
-            style={{ flex: 1, padding: '10px', marginRight: '10px' }}
-          />
-          <button type="submit" style={{ padding: '10px 20px' }}>
-            Enviar
-          </button>
-        </div>
-      </form>
+      <MessageList messages={messages} currentUser={username} />
+      <ChatForm 
+        messageInput={messageInput}
+        onMessageChange={(e) => setMessageInput(e.target.value)}
+        onSubmit={handleSendMessage}
+        onImageUpload={handleImageUpload}
+        showEmojiPicker={showEmojiPicker}
+        onEmojiToggle={() => setShowEmojiPicker(!showEmojiPicker)}
+        onEmojiSelect={(emojiObject) => {
+          setMessageInput(prev => prev + emojiObject.emoji);
+          setShowEmojiPicker(false);
+        }}
+      />
     </div>
   );
 }
