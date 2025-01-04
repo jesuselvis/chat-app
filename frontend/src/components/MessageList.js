@@ -17,10 +17,9 @@ export const MessageList = ({ messages, currentUser }) => {
       <div style={{ height: '400px', overflowY: 'auto', border: '1px solid #ccc' }}>
         {messages.map((msg, i) => (
           <div key={i} style={{ padding: '10px', backgroundColor: msg.user === currentUser ? '#e3f2fd' : 'white' }}>
-            <strong style={{display: 'block', marginBottom: '5px'}}>{msg.user}:</strong>
-            <div style={{marginBottom: msg.image ? '10px' : '0'}}>{msg.text}</div>
+            <strong>{msg.user}:</strong> {msg.text}
             {msg.image && (
-                <div style={{display: 'flex', justifyContent: 'center'}}>
+                <div style={{display: 'flex', justifyContent: 'center', marginTop: '10px'}}>
                     <img 
                         src={msg.image} 
                         alt="uploaded" 
