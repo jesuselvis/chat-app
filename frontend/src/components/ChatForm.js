@@ -38,6 +38,7 @@ export const ChatForm = ({
         <input
           value={messageInput}
           onChange={onMessageChange}
+          placeholder='Escriba un mensaje...'
           style={{ 
             flex: 1, 
             padding: '12px',
