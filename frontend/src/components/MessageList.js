@@ -17,13 +17,18 @@ export const MessageList = ({ messages, currentUser }) => {
       <div style={{ height: '400px', overflowY: 'auto', border: '1px solid #ccc' }}>
         {messages.map((msg, i) => (
           <div key={i} style={{ padding: '10px', backgroundColor: msg.user === currentUser ? '#e3f2fd' : 'white' }}>
-            <strong>{msg.user}:</strong> {msg.text}
-            {msg.image && <img 
-              src={msg.image} 
-              alt="uploaded" 
-              onClick={() => setSelectedImage(msg.image)}
-              style={{ maxWidth: '200px', cursor: 'pointer', marginTop: '5px' }} 
-            />}
+            <strong style={{display: 'block', marginBottom: '5px'}}>{msg.user}:</strong>
+            <div style={{marginBottom: msg.image ? '10px' : '0'}}>{msg.text}</div>
+            {msg.image && (
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <img 
+                        src={msg.image} 
+                        alt="uploaded" 
+                        onClick={() => setSelectedImage(msg.image)}
+                        style={{ maxWidth: '200px', cursor: 'pointer'}} 
+                    />
+                </div>
+            )}
           </div>
         ))}
         <div ref={messagesEndRef} />
