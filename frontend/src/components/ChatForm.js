@@ -1,3 +1,5 @@
+import EmojiPicker from 'emoji-picker-react';
+
 export const ChatForm = ({ messageInput, onMessageChange, onSubmit, onImageUpload, showEmojiPicker, onEmojiToggle, onEmojiSelect }) => (
     <form onSubmit={onSubmit}>
       <div style={{ display: 'flex', marginBottom: '10px' }}>
