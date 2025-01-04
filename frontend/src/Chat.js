@@ -66,8 +66,20 @@ function Chat() {
   }
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-      <h2>Chat como: {username}</h2>
+    <div style={{ 
+      maxWidth: '800px',
+      margin: '20px auto',
+      padding: '20px',
+      backgroundColor: '#f5f5f5',
+      borderRadius: '12px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',        
+      }}>
+      <h2 style={{
+        textAlign: 'center',
+        color: '#333',
+        padding: '10px',
+        borderBottom: '2px solid #e0e0e0'
+      }}>Chat como: {username}</h2>
       <MessageList messages={messages} currentUser={username} />
       <ChatForm 
         messageInput={messageInput}

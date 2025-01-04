@@ -14,10 +14,22 @@ export const MessageList = ({ messages, currentUser }) => {
 
   return (
     <>
-      <div style={{ height: '400px', overflowY: 'auto', border: '1px solid #ccc' }}>
+      <div style={{ 
+        height: '500px', 
+        overflowY: 'auto', 
+        padding: '15px',
+        backgroundColor: 'white',
+        borderRadius: '8px',
+        border: '1px solid #e0e0e0'
+        }}>
         {messages.map((msg, i) => (
-          <div key={i} style={{ padding: '10px', backgroundColor: msg.user === currentUser ? '#e3f2fd' : 'white' }}>
-            <strong>{msg.user}:</strong> {msg.text}
+          <div key={i} style={{ 
+            padding: '12px', 
+            backgroundColor: msg.user === currentUser ? '#e3f2fd' : 'white',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+            }}>
+            <strong style={{color: '#2196f3'}} > {msg.user}:</strong> {msg.text}
             {msg.image && (
                 <div style={{display: 'flex', justifyContent: 'center'}}>
                     <img 
