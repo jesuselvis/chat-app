@@ -1,6 +1,16 @@
 import EmojiPicker from 'emoji-picker-react';
+import { AudioRecorder } from './AudioRecorder';
 
-export const ChatForm = ({ messageInput, onMessageChange, onSubmit, onImageUpload, showEmojiPicker, onEmojiToggle, onEmojiSelect }) => (
+export const ChatForm = ({ 
+    messageInput, 
+    onMessageChange, 
+    onSubmit, 
+    onImageUpload, 
+    showEmojiPicker, 
+    onEmojiToggle, 
+    onEmojiSelect, 
+    onAudioRecord
+ }) => (
     <form onSubmit={onSubmit}>
       <div style={{ display: 'flex', marginBottom: '10px' }}>
         <input
@@ -9,6 +19,7 @@ export const ChatForm = ({ messageInput, onMessageChange, onSubmit, onImageUploa
           onChange={onImageUpload}
           style={{ marginRight: '10px' }}
         />
+        <AudioRecorder onAudioRecord={onAudioRecord} />
         <button type="button" onClick={onEmojiToggle}>😊</button>
       </div>
       {showEmojiPicker && (

@@ -19,7 +19,7 @@ export const MessageList = ({ messages, currentUser }) => {
           <div key={i} style={{ padding: '10px', backgroundColor: msg.user === currentUser ? '#e3f2fd' : 'white' }}>
             <strong>{msg.user}:</strong> {msg.text}
             {msg.image && (
-                <div style={{display: 'flex', justifyContent: 'center', marginTop: '10px'}}>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
                     <img 
                         src={msg.image} 
                         alt="uploaded" 
@@ -27,6 +27,9 @@ export const MessageList = ({ messages, currentUser }) => {
                         style={{ maxWidth: '200px', cursor: 'pointer'}} 
                     />
                 </div>
+            )}
+            {msg.audio && (
+                <audio controls src={msg.audio} style={{marginTop: '10px', width: '100%'}} />
             )}
           </div>
         ))}

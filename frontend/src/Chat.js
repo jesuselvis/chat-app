@@ -47,6 +47,14 @@ function Chat() {
     }
   };
 
+  const handleAudioRecord = (audioData) => {
+    WebSocket.emit('message',{
+        user: username,
+        text: '🎤 Mensaje de voz',
+        audio: audioData
+    })
+  };
+
   if (!isNameSet) {
     return (
       <LoginForm 
@@ -72,6 +80,7 @@ function Chat() {
           setMessageInput(prev => prev + emojiObject.emoji);
           setShowEmojiPicker(false);
         }}
+        onAudioRecord={handleAudioRecord}
       />
     </div>
   );
