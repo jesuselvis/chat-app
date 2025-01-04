@@ -12,15 +12,15 @@ export const ChatForm = ({
     onAudioRecord
  }) => (
     <form onSubmit={onSubmit}>
-      <div style={{ display: 'flex', marginBottom: '10px' }}>
+      <div style={{ display: 'flex', marginBottom: '10px', justifyContent: 'space-between' }}>
         <input
           type="file"
           accept="image/*"
           onChange={onImageUpload}
           style={{ marginRight: '10px' }}
         />
-        <AudioRecorder onAudioRecord={onAudioRecord} />
         <button type="button" onClick={onEmojiToggle}>😊</button>
+        <AudioRecorder onAudioRecord={onAudioRecord} />
       </div>
       {showEmojiPicker && (
         <div style={{ position: 'absolute', bottom: '100px' }}>
