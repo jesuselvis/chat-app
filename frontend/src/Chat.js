@@ -4,7 +4,7 @@ import { LoginForm } from './components/LoginForm';
 import { MessageList } from './components/MessageList';
 import { ChatForm } from './components/ChatForm';
 
-const socket = io('http://34.227.157.219:5000');
+const socket = io('http://44.212.21.75:5000');
 
 function Chat() {
   const [messages, setMessages] = useState([]);

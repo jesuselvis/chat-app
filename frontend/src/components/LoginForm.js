@@ -12,7 +12,7 @@ export const LoginForm = ({ username, onUsernameChange, onSubmit }) => (
         marginBottom: '20px',
         color: '#333'
       }}>
-        Bienvenido al Chat de la Deep Web
+        Bienvenido al Chat Analitika Deep Web
       </h2>
       <input
         placeholder="Ingresa tu nombre"
