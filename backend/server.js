@@ -14,6 +14,26 @@ const io = socketIo(server, {
   }
 });
 
+const activeUsers = new Set();
+
+io.on('connection', (socket) => {
+  socket.on('check-username', (username, callback) => {
+    if (activeUsers.has(username)) {
+      callback(false);
+    } else {
+      activeUsers.add(username);
+      callback(true);
+      socket.username = username;
+    }
+  });
+
+  socket.on('disconnect', () => {
+    if (socket.username) {
+      activeUsers.delete(socket.username);
+    }
+  });
+});
+
 io.on('connection', (socket) => {
   console.log('Usuario conectado');
 

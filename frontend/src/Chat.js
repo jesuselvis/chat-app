@@ -20,9 +20,17 @@ function Chat() {
     });
   }, []);
 
-  const handleSetName = (e) => {
+  const handleSetName = async (e) => {
     e.preventDefault();
-    if (username.trim()) setIsNameSet(true);
+    if (!username.trim()) return;
+    
+    socket.emit('check-username', username, (isAvailable) => {
+      if (isAvailable) {
+        setIsNameSet(true);
+      } else {
+        alert('Este nombre ya está en uso!, no seas pendex');
+      }
+    });
   };
 
   const handleSendMessage = (e) => {
